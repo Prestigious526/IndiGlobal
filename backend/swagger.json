@@ -1,0 +1,234 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "IndiGlobal E-Commerce API",
+    "version": "1.0.0",
+    "description": "API documentation for IndiGlobal backend services."
+  },
+  "paths": {
+    "/api/auth/register": {
+      "post": {
+        "summary": "Register a new user",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "email": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  },
+                  "country": {
+                    "type": "string"
+                  },
+                  "state": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "name",
+                  "email",
+                  "password",
+                  "country"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "User registered successfully"
+          },
+          "409": {
+            "description": "User already exists"
+          }
+        }
+      }
+    },
+    "/api/auth/login": {
+      "post": {
+        "summary": "Login user",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "email",
+                  "password"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Login successful"
+          },
+          "401": {
+            "description": "Invalid credentials"
+          }
+        }
+      }
+    },
+    "/api/products": {
+      "get": {
+        "summary": "Get all products",
+        "parameters": [
+          {
+            "name": "category",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "Optional category filter"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of products"
+          }
+        }
+      }
+    },
+    "/api/products/search": {
+      "get": {
+        "summary": "Search products",
+        "parameters": [
+          {
+            "name": "q",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Matching products"
+          }
+        }
+      }
+    },
+    "/api/cart": {
+      "get": {
+        "summary": "Get current user's cart",
+        "responses": {
+          "200": {
+            "description": "Cart items"
+          }
+        }
+      }
+    },
+    "/api/cart/add": {
+      "post": {
+        "summary": "Add item to cart",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "productId": {
+                    "type": "string"
+                  },
+                  "quantity": {
+                    "type": "integer"
+                  }
+                },
+                "required": [
+                  "productId",
+                  "quantity"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Item added"
+          }
+        }
+      }
+    },
+    "/api/orders": {
+      "post": {
+        "summary": "Place a new order from cart",
+        "responses": {
+          "201": {
+            "description": "Order placed"
+          },
+          "400": {
+            "description": "Cart empty or invalid"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    },
+    "/api/orders/history": {
+      "get": {
+        "summary": "Get past orders for logged-in user",
+        "responses": {
+          "200": {
+            "description": "Order history"
+          }
+        }
+      }
+    },
+    "/api/currency/convert": {
+      "get": {
+        "summary": "Convert INR to another currency",
+        "parameters": [
+          {
+            "name": "amount",
+            "in": "query",
+            "schema": {
+              "type": "number"
+            },
+            "required": true
+          },
+          {
+            "name": "to",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Converted amount"
+          },
+          "400": {
+            "description": "Missing params"
+          },
+          "500": {
+            "description": "Conversion failure"
+          }
+        }
+      }
+    }
+  }
+}

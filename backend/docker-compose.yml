@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  backend:
+    build: .
+    container_name: indiglobal-backend
+    ports:
+      - '5000:5000'
+    environment:
+      - DB_NAME=indiglobal
+      - DB_USER=root
+      - DB_PASS=secret
+      - DB_HOST=db
+      - JWT_SECRET=your_secret_key
+    depends_on:
+      - db
+
+  db:
+    image: mysql:8
+    container_name: indiglobal-mysql
+    restart: always
+    ports:
+      - '3307:3306'
+    environment:
+      MYSQL_ROOT_PASSWORD: secret
+      MYSQL_DATABASE: indiglobal
+    volumes:
+      - db_data:/var/lib/mysql
+
+volumes:
+  db_data:
